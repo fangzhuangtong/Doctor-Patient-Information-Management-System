@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.hello.mapper.ReportAuditMapper">
+    
+    <select id="selectAll" resultType="com.example.hello.entity.ReportAudit">
+        SELECT * FROM report_audit
+    </select>
+    
+    <select id="selectByCondition" resultType="com.example.hello.entity.ReportAudit">
+        SELECT * FROM report_audit
+        <where>
+            <if test="reportType != null and reportType != ''">
+                AND report_type = #{reportType}
+            </if>
+            <if test="doctorId != null">
+                AND doctor_id = #{doctorId}
+            </if>
+            <if test="reportId != null">
+                AND report_id = #{reportId}
+            </if>
+            <if test="auditResult != null and auditResult != ''">
+                AND audit_result = #{auditResult}
+            </if>
+        </where>
+        ORDER BY audit_time DESC
+    </select>
+    
+    <select id="selectById" resultType="com.example.hello.entity.ReportAudit">
+        SELECT * FROM report_audit WHERE audit_id = #{auditId}
+    </select>
+    
+    <insert id="insert" parameterType="com.example.hello.entity.ReportAudit">
+        INSERT INTO report_audit (
+            report_type, report_id, audit_result, doctor_id
+        )
+        VALUES (
+            #{reportType}, #{reportId}, #{auditResult}, #{doctorId}
+        )
+    </insert>
+    
+    <update id="update" parameterType="com.example.hello.entity.ReportAudit">
+        UPDATE report_audit
+        <set>
+            <if test="auditResult != null">audit_result = #{auditResult},</if>
+            <if test="doctorId != null">doctor_id = #{doctorId},</if>
+        </set>
+        WHERE audit_id = #{auditId}
+    </update>
+    
+    <delete id="deleteById">
+        DELETE FROM report_audit WHERE audit_id = #{auditId}
+    </delete>
+</mapper> 

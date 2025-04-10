@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.hello.mapper.UserMapper">
+    
+    <select id="selectAll" resultType="com.example.hello.entity.User">
+        SELECT * FROM user
+    </select>
+    
+    <select id="selectByCondition" resultType="com.example.hello.entity.User">
+        SELECT * FROM user
+        <where>
+            <if test="name != null and name != ''">
+                AND name LIKE CONCAT('%', #{name}, '%')
+            </if>
+            <if test="gender != null and gender != ''">
+                AND gender = #{gender}
+            </if>
+        </where>
+    </select>
+    
+    <select id="selectById" resultType="com.example.hello.entity.User">
+        SELECT * FROM user WHERE user_id = #{userId}
+    </select>
+    
+    <insert id="insert" parameterType="com.example.hello.entity.User">
+        INSERT INTO user (name, gender, birthdate, phone, id_card, address)
+        VALUES (#{name}, #{gender}, #{birthdate}, #{phone}, #{idCard}, #{address})
+    </insert>
+    
+    <update id="update" parameterType="com.example.hello.entity.User">
+        UPDATE user
+        <set>
+            <if test="name != null">name = #{name},</if>
+            <if test="gender != null">gender = #{gender},</if>
+            <if test="birthdate != null">birthdate = #{birthdate},</if>
+            <if test="phone != null">phone = #{phone},</if>
+            <if test="address != null">address = #{address},</if>
+        </set>
+        WHERE user_id = #{userId}
+    </update>
+    
+    <delete id="deleteById">
+        DELETE FROM user WHERE user_id = #{userId}
+    </delete>
+</mapper> 

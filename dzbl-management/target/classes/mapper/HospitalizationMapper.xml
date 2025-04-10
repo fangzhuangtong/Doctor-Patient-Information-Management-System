@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.hello.mapper.HospitalizationMapper">
+    
+    <select id="selectAll" resultType="com.example.hello.entity.Hospitalization">
+        SELECT * FROM hospitalization
+    </select>
+    
+    <select id="selectByCondition" resultType="com.example.hello.entity.Hospitalization">
+        SELECT * FROM hospitalization
+        <where>
+            <if test="userId != null">
+                AND user_id = #{userId}
+            </if>
+            <if test="doctorId != null">
+                AND doctor_id = #{doctorId}
+            </if>
+            <if test="bedNumber != null and bedNumber != ''">
+                AND bed_number = #{bedNumber}
+            </if>
+            <if test="status != null and status != ''">
+                AND status = #{status}
+            </if>
+        </where>
+        ORDER BY admit_time DESC
+    </select>
+    
+    <select id="selectById" resultType="com.example.hello.entity.Hospitalization">
+        SELECT * FROM hospitalization WHERE hos_id = #{hosId}
+    </select>
+    
+    <insert id="insert" parameterType="com.example.hello.entity.Hospitalization">
+        INSERT INTO hospitalization (
+            user_id, admit_time, doctor_id, bed_number, summary, status
+        )
+        VALUES (
+            #{userId}, #{admitTime}, #{doctorId}, #{bedNumber}, #{summary}, #{status}
+        )
+    </insert>
+    
+    <update id="update" parameterType="com.example.hello.entity.Hospitalization">
+        UPDATE hospitalization
+        <set>
+            <if test="admitTime != null">admit_time = #{admitTime},</if>
+            <if test="dischargeTime != null">discharge_time = #{dischargeTime},</if>
+            <if test="bedNumber != null">bed_number = #{bedNumber},</if>
+            <if test="doctorId != null">doctor_id = #{doctorId},</if>
+            <if test="summary != null">summary = #{summary},</if>
+            <if test="status != null">status = #{status},</if>
+        </set>
+        WHERE hos_id = #{hosId}
+    </update>
+    
+    <delete id="deleteById">
+        DELETE FROM hospitalization WHERE hos_id = #{hosId}
+    </delete>
+</mapper> 

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.hello.mapper.FamilyRelationMapper">
+    
+    <select id="selectAll" resultType="com.example.hello.entity.FamilyRelation">
+        SELECT * FROM family_relation
+    </select>
+    
+    <select id="selectByCondition" resultType="com.example.hello.entity.FamilyRelation">
+        SELECT * FROM family_relation
+        <where>
+            <if test="patientId != null">
+                AND patient_id = #{patientId}
+            </if>
+            <if test="relativeId != null">
+                AND relative_id = #{relativeId}
+            </if>
+            <if test="relationType != null and relationType != ''">
+                AND relation_type = #{relationType}
+            </if>
+            <if test="isValid != null">
+                AND is_valid = #{isValid}
+            </if>
+        </where>
+        ORDER BY bind_time DESC
+    </select>
+    
+    <select id="selectById" resultType="com.example.hello.entity.FamilyRelation">
+        SELECT * FROM family_relation WHERE relation_id = #{relationId}
+    </select>
+    
+    <insert id="insert" parameterType="com.example.hello.entity.FamilyRelation">
+        INSERT INTO family_relation (
+            patient_id, relative_id, relation_type, is_valid
+        )
+        VALUES (
+            #{patientId}, #{relativeId}, #{relationType}, #{isValid}
+        )
+    </insert>
+    
+    <update id="update" parameterType="com.example.hello.entity.FamilyRelation">
+        UPDATE family_relation
+        <set>
+            <if test="relationType != null">relation_type = #{relationType},</if>
+            <if test="isValid != null">is_valid = #{isValid},</if>
+        </set>
+        WHERE relation_id = #{relationId}
+    </update>
+    
+    <delete id="deleteById">
+        DELETE FROM family_relation WHERE relation_id = #{relationId}
+    </delete>
+</mapper> 

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.hello.mapper.MedicalFileMapper">
+    
+    <select id="selectAll" resultType="com.example.hello.entity.MedicalFile">
+        SELECT * FROM medical_file
+    </select>
+    
+    <select id="selectByCondition" resultType="com.example.hello.entity.MedicalFile">
+        SELECT * FROM medical_file
+        <where>
+            <if test="userId != null">
+                AND user_id = #{userId}
+            </if>
+            <if test="reportId != null">
+                AND report_id = #{reportId}
+            </if>
+            <if test="moduleType != null and moduleType != ''">
+                AND module_type = #{moduleType}
+            </if>
+        </where>
+        ORDER BY upload_time DESC
+    </select>
+    
+    <select id="selectById" resultType="com.example.hello.entity.MedicalFile">
+        SELECT * FROM medical_file WHERE file_id = #{fileId}
+    </select>
+    
+    <insert id="insert" parameterType="com.example.hello.entity.MedicalFile">
+        INSERT INTO medical_file (
+            user_id, report_id, module_type, file_url
+        )
+        VALUES (
+            #{userId}, #{reportId}, #{moduleType}, #{fileUrl}
+        )
+    </insert>
+    
+    <update id="update" parameterType="com.example.hello.entity.MedicalFile">
+        UPDATE medical_file
+        <set>
+            <if test="reportId != null">report_id = #{reportId},</if>
+            <if test="moduleType != null">module_type = #{moduleType},</if>
+            <if test="fileUrl != null">file_url = #{fileUrl},</if>
+        </set>
+        WHERE file_id = #{fileId}
+    </update>
+    
+    <delete id="deleteById">
+        DELETE FROM medical_file WHERE file_id = #{fileId}
+    </delete>
+</mapper> 

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.hello.mapper.ExamBookingMapper">
+    
+    <select id="selectAll" resultType="com.example.hello.entity.ExamBooking">
+        SELECT * FROM exam_booking
+    </select>
+    
+    <select id="selectByCondition" resultType="com.example.hello.entity.ExamBooking">
+        SELECT * FROM exam_booking
+        <where>
+            <if test="userId != null">
+                AND user_id = #{userId}
+            </if>
+            <if test="examType != null and examType != ''">
+                AND exam_type = #{examType}
+            </if>
+            <if test="status != null and status != ''">
+                AND status = #{status}
+            </if>
+            <if test="doctorId != null">
+                AND doctor_id = #{doctorId}
+            </if>
+        </where>
+        ORDER BY schedule_time DESC
+    </select>
+    
+    <select id="selectById" resultType="com.example.hello.entity.ExamBooking">
+        SELECT * FROM exam_booking WHERE exam_id = #{examId}
+    </select>
+    
+    <insert id="insert" parameterType="com.example.hello.entity.ExamBooking">
+        INSERT INTO exam_booking (
+            user_id, exam_type, schedule_time, location, status, fee, doctor_id
+        )
+        VALUES (
+            #{userId}, #{examType}, #{scheduleTime}, #{location}, #{status}, #{fee}, #{doctorId}
+        )
+    </insert>
+    
+    <update id="update" parameterType="com.example.hello.entity.ExamBooking">
+        UPDATE exam_booking
+        <set>
+            <if test="scheduleTime != null">schedule_time = #{scheduleTime},</if>
+            <if test="location != null">location = #{location},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="fee != null">fee = #{fee},</if>
+            <if test="doctorId != null">doctor_id = #{doctorId},</if>
+        </set>
+        WHERE exam_id = #{examId}
+    </update>
+    
+    <delete id="deleteById">
+        DELETE FROM exam_booking WHERE exam_id = #{examId}
+    </delete>
+</mapper> 

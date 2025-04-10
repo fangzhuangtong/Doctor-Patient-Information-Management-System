@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.hello.mapper.AdminAccountMapper">
+    
+    <select id="selectAll" resultType="com.example.hello.entity.AdminAccount">
+        SELECT admin_id, username FROM admin_account
+    </select>
+    
+    <select id="selectByCondition" resultType="com.example.hello.entity.AdminAccount">
+        SELECT admin_id, username FROM admin_account
+        <where>
+            <if test="username != null and username != ''">
+                AND username LIKE CONCAT('%', #{username}, '%')
+            </if>
+        </where>
+    </select>
+    
+    <select id="selectById" resultType="com.example.hello.entity.AdminAccount">
+        SELECT * FROM admin_account WHERE admin_id = #{adminId}
+    </select>
+    
+    <select id="selectByUsername" resultType="com.example.hello.entity.AdminAccount">
+        SELECT * FROM admin_account WHERE username = #{username}
+    </select>
+    
+    <insert id="insert" parameterType="com.example.hello.entity.AdminAccount" useGeneratedKeys="true" keyProperty="adminId">
+        INSERT INTO admin_account (username, password)
+        VALUES (#{username}, #{password})
+    </insert>
+    
+    <update id="updatePassword">
+        UPDATE admin_account SET password = #{password}
+        WHERE admin_id = #{adminId}
+    </update>
+    
+    <delete id="deleteById">
+        DELETE FROM admin_account WHERE admin_id = #{adminId}
+    </delete>
+</mapper> 

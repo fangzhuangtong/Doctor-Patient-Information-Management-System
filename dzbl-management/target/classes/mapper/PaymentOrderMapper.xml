@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.hello.mapper.PaymentOrderMapper">
+    
+    <select id="selectAll" resultType="com.example.hello.entity.PaymentOrder">
+        SELECT * FROM payment_order
+    </select>
+    
+    <select id="selectByCondition" resultType="com.example.hello.entity.PaymentOrder">
+        SELECT * FROM payment_order
+        <where>
+            <if test="userId != null">
+                AND user_id = #{userId}
+            </if>
+            <if test="orderType != null and orderType != ''">
+                AND order_type = #{orderType}
+            </if>
+            <if test="payStatus != null and payStatus != ''">
+                AND pay_status = #{payStatus}
+            </if>
+            <if test="relatedId != null">
+                AND related_id = #{relatedId}
+            </if>
+        </where>
+        ORDER BY create_time DESC
+    </select>
+    
+    <select id="selectById" resultType="com.example.hello.entity.PaymentOrder">
+        SELECT * FROM payment_order WHERE order_id = #{orderId}
+    </select>
+    
+    <insert id="insert" parameterType="com.example.hello.entity.PaymentOrder">
+        INSERT INTO payment_order (
+            user_id, order_type, related_id, amount, pay_status
+        )
+        VALUES (
+            #{userId}, #{orderType}, #{relatedId}, #{amount}, #{payStatus}
+        )
+    </insert>
+    
+    <update id="update" parameterType="com.example.hello.entity.PaymentOrder">
+        UPDATE payment_order
+        <set>
+            <if test="payStatus != null">pay_status = #{payStatus},</if>
+            <if test="payTime != null">pay_time = #{payTime},</if>
+            <if test="payMethod != null">pay_method = #{payMethod},</if>
+        </set>
+        WHERE order_id = #{orderId}
+    </update>
+    
+    <delete id="deleteById">
+        DELETE FROM payment_order WHERE order_id = #{orderId}
+    </delete>
+</mapper> 

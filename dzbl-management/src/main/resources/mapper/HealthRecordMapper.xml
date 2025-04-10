@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.hello.mapper.HealthRecordMapper">
+    
+    <select id="selectAll" resultType="com.example.hello.entity.HealthRecord">
+        SELECT * FROM health_record
+    </select>
+    
+    <select id="selectByCondition" resultType="com.example.hello.entity.HealthRecord">
+        SELECT * FROM health_record
+        <where>
+            <if test="userId != null">
+                AND user_id = #{userId}
+            </if>
+            <if test="bloodType != null and bloodType != ''">
+                AND blood_type = #{bloodType}
+            </if>
+        </where>
+    </select>
+    
+    <select id="selectById" resultType="com.example.hello.entity.HealthRecord">
+        SELECT * FROM health_record WHERE record_id = #{recordId}
+    </select>
+    
+    <insert id="insert" parameterType="com.example.hello.entity.HealthRecord">
+        INSERT INTO health_record (
+            user_id, blood_type, height, weight, blood_pressure,
+            blood_lipid, blood_glucose, allergy_history, past_medical_history,
+            family_history, smoking_history, alcohol_history, dietary_habits,
+            exercise_frequency, sleep_quality, psychological_status, bmi,
+            risk_score
+        )
+        VALUES (
+            #{userId}, #{bloodType}, #{height}, #{weight}, #{bloodPressure},
+            #{bloodLipid}, #{bloodGlucose}, #{allergyHistory}, #{pastMedicalHistory},
+            #{familyHistory}, #{smokingHistory}, #{alcoholHistory}, #{dietaryHabits},
+            #{exerciseFrequency}, #{sleepQuality}, #{psychologicalStatus}, #{bmi},
+            #{riskScore}
+        )
+    </insert>
+    
+    <update id="update" parameterType="com.example.hello.entity.HealthRecord">
+        UPDATE health_record
+        <set>
+            <if test="bloodType != null and bloodType != ''">blood_type = #{bloodType},</if>
+            <if test="height != null">height = #{height},</if>
+            <if test="weight != null">weight = #{weight},</if>
+            <if test="bloodPressure != null and bloodPressure != ''">blood_pressure = #{bloodPressure},</if>
+            <if test="bloodLipid != null and bloodLipid != ''">blood_lipid = #{bloodLipid},</if>
+            <if test="bloodGlucose != null and bloodGlucose != ''">blood_glucose = #{bloodGlucose},</if>
+            <if test="allergyHistory != null and allergyHistory != ''">allergy_history = #{allergyHistory},</if>
+            <if test="pastMedicalHistory != null and pastMedicalHistory != ''">past_medical_history = #{pastMedicalHistory},</if>
+            <if test="familyHistory != null and familyHistory != ''">family_history = #{familyHistory},</if>
+            <if test="smokingHistory != null and smokingHistory != ''">smoking_history = #{smokingHistory},</if>
+            <if test="alcoholHistory != null and alcoholHistory != ''">alcohol_history = #{alcoholHistory},</if>
+            <if test="dietaryHabits != null and dietaryHabits != ''">dietary_habits = #{dietaryHabits},</if>
+            <if test="exerciseFrequency != null and exerciseFrequency != ''">exercise_frequency = #{exerciseFrequency},</if>
+            <if test="sleepQuality != null and sleepQuality != ''">sleep_quality = #{sleepQuality},</if>
+            <if test="psychologicalStatus != null and psychologicalStatus != ''">psychological_status = #{psychologicalStatus},</if>
+            <if test="bmi != null">bmi = #{bmi},</if>
+            <if test="riskScore != null">risk_score = #{riskScore},</if>
+            <if test="true">update_time = NOW()</if>
+        </set>
+        WHERE record_id = #{recordId}
+    </update>
+    
+    <delete id="deleteById">
+        DELETE FROM health_record WHERE record_id = #{recordId}
+    </delete>
+    
+    <select id="selectByUserId" resultType="com.example.hello.entity.HealthRecord">
+        SELECT 
+            record_id,
+            user_id,
+            blood_type,
+            height,
+            weight,
+            blood_pressure,
+            blood_lipid,
+            blood_glucose,
+            allergy_history,
+            past_medical_history,
+            family_history,
+            smoking_history,
+            alcohol_history,
+            dietary_habits,
+            exercise_frequency,
+            sleep_quality,
+            psychological_status,
+            bmi,
+            risk_score,
+            create_time,
+            update_time
+        FROM health_record
+        WHERE user_id = #{userId}
+        ORDER BY create_time DESC
+    </select>
+</mapper> 

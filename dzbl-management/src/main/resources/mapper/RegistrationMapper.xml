@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.hello.mapper.RegistrationMapper">
+    
+    <select id="selectAll" resultType="com.example.hello.entity.Registration">
+        SELECT * FROM registration
+    </select>
+    
+    <select id="selectByCondition" resultType="com.example.hello.entity.Registration">
+        SELECT * FROM registration
+        <where>
+            <if test="userId != null">
+                AND user_id = #{userId}
+            </if>
+            <if test="doctorId != null">
+                AND doctor_id = #{doctorId}
+            </if>
+            <if test="status != null and status != ''">
+                AND status = #{status}
+            </if>
+        </where>
+        ORDER BY create_time DESC
+    </select>
+    
+    <select id="selectById" resultType="com.example.hello.entity.Registration">
+        SELECT * FROM registration WHERE reg_id = #{regId}
+    </select>
+    
+    <insert id="insert" parameterType="com.example.hello.entity.Registration">
+        INSERT INTO registration (
+            user_id, department_id, doctor_id, reg_time, status, fee
+        )
+        VALUES (
+            #{userId}, #{departmentId}, #{doctorId}, #{regTime}, #{status}, #{fee}
+        )
+    </insert>
+    
+    <update id="update" parameterType="com.example.hello.entity.Registration">
+        UPDATE registration
+        <set>
+            <if test="regTime != null">reg_time = #{regTime},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="fee != null">fee = #{fee},</if>
+        </set>
+        WHERE reg_id = #{regId}
+    </update>
+    
+    <delete id="deleteById">
+        DELETE FROM registration WHERE reg_id = #{regId}
+    </delete>
+</mapper> 

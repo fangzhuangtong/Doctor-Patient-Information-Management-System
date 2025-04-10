@@ -1,0 +1,40 @@
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/db2
+    username: root
+    password: 1234
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  lifecycle:
+    timeout-per-shutdown-phase: 30s
+  shutdown:
+    grace-period: 30s
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+  servlet:
+    multipart:
+      max-file-size: 1000MB      # 单个文件大小限制
+      max-request-size: 10000MB   # 单次请求总文件大小限制
+
+server:
+  port: 8080
+  shutdown: graceful
+
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  type-handlers-package: com.example.hello.config
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+#阿里云OSS配置
+aliyun:
+  oss:
+    endpoint: https://oss-cn-beijing.aliyuncs.com
+    accessKeyId: LTAI5tABshm6SVW9kd6HYjkt
+    accessKeySecret: LlkMKVdYdWs7NEASgxOVxJv7oFjzAe
+    bucketName: web-fangzhuangtong
+
+deepseek:
+  api-key: sk-a98d2428b42045b592098c244830b5bc
+  base-url: https://api.deepseek.com 

@@ -1,0 +1,13 @@
+.combined-report-maker {
+  padding: 20px;
+}
+
+.report-selector {
+  border-bottom: 1px solid #f0f0f0;
+  padding-bottom: 16px;
+  margin-bottom: 16px;
+}
+
+.report-content {
+  min-height: 400px;
+} 

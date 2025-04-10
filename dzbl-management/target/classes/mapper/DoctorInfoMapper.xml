@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.hello.mapper.DoctorInfoMapper">
+    
+    <select id="selectAll" resultType="com.example.hello.entity.DoctorInfo">
+        SELECT * FROM doctor_info
+    </select>
+    
+    <select id="selectByCondition" resultType="com.example.hello.entity.DoctorInfo">
+        SELECT * FROM doctor_info
+        <where>
+            <if test="departmentId != null">
+                AND department_id = #{departmentId}
+            </if>
+            <if test="title != null and title != ''">
+                AND title = #{title}
+            </if>
+            <if test="licenseNo != null and licenseNo != ''">
+                AND license_no = #{licenseNo}
+            </if>
+            <if test="introduction != null and introduction != ''">
+                AND introduction LIKE CONCAT('%', #{introduction}, '%')
+            </if>
+            <if test="doctorName != null and doctorName != ''">
+                AND doctor_name LIKE CONCAT('%', #{doctorName}, '%')
+            </if>
+        </where>
+        ORDER BY create_time DESC
+    </select>
+    
+    <select id="selectById" resultType="com.example.hello.entity.DoctorInfo">
+        SELECT * FROM doctor_info WHERE doctor_id = #{doctorId}
+    </select>
+    
+    <insert id="insert" parameterType="com.example.hello.entity.DoctorInfo">
+        INSERT INTO doctor_info (
+            department_id, title, license_no, introduction, doctor_name
+        )
+        VALUES (
+            #{departmentId}, #{title}, #{licenseNo}, #{introduction}, #{doctorName}
+        )
+    </insert>
+    
+    <update id="update" parameterType="com.example.hello.entity.DoctorInfo">
+        UPDATE doctor_info
+        <set>
+            <if test="departmentId != null">department_id = #{departmentId},</if>
+            <if test="title != null">title = #{title},</if>
+            <if test="licenseNo != null">license_no = #{licenseNo},</if>
+            <if test="introduction != null">introduction = #{introduction},</if>
+            <if test="doctorName != null">doctor_name = #{doctorName},</if>
+        </set>
+        WHERE doctor_id = #{doctorId}
+    </update>
+    
+    <delete id="deleteById">
+        DELETE FROM doctor_info WHERE doctor_id = #{doctorId}
+    </delete>
+</mapper> 

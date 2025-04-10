@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.hello.mapper.DoctorScheduleMapper">
+    
+    <select id="selectAll" resultType="com.example.hello.entity.DoctorSchedule">
+        SELECT * FROM doctor_schedule
+    </select>
+    
+    <select id="selectByCondition" resultType="com.example.hello.entity.DoctorSchedule">
+        SELECT * FROM doctor_schedule
+        <where>
+            <if test="doctorId != null">
+                AND doctor_id = #{doctorId}
+            </if>
+            <if test="scheduleType != null and scheduleType != ''">
+                AND schedule_type = #{scheduleType}
+            </if>
+            <if test="scheduleDate != null">
+                AND schedule_date = #{scheduleDate}
+            </if>
+            <if test="doctorName != null and doctorName != ''">
+                AND doctor_name LIKE CONCAT('%', #{doctorName}, '%')
+            </if>
+            <if test="department != null and department != ''">
+                AND department = #{department}
+            </if>
+        </where>
+        ORDER BY schedule_date DESC
+    </select>
+    
+    <select id="selectById" resultType="com.example.hello.entity.DoctorSchedule">
+        SELECT * FROM doctor_schedule WHERE schedule_id = #{scheduleId}
+    </select>
+    
+    <insert id="insert" parameterType="com.example.hello.entity.DoctorSchedule">
+        INSERT INTO doctor_schedule (
+            doctor_id, schedule_type, schedule_date, time_range, max_patient,
+            doctor_name, department
+        )
+        VALUES (
+            #{doctorId}, #{scheduleType}, #{scheduleDate}, #{timeRange}, #{maxPatient},
+            #{doctorName}, #{department}
+        )
+    </insert>
+    
+    <update id="update" parameterType="com.example.hello.entity.DoctorSchedule">
+        UPDATE doctor_schedule
+        <set>
+            <if test="scheduleType != null">schedule_type = #{scheduleType},</if>
+            <if test="scheduleDate != null">schedule_date = #{scheduleDate},</if>
+            <if test="timeRange != null">time_range = #{timeRange},</if>
+            <if test="maxPatient != null">max_patient = #{maxPatient},</if>
+            <if test="doctorName != null">doctor_name = #{doctorName},</if>
+            <if test="department != null">department = #{department},</if>
+        </set>
+        WHERE schedule_id = #{scheduleId}
+    </update>
+    
+    <delete id="deleteById">
+        DELETE FROM doctor_schedule WHERE schedule_id = #{scheduleId}
+    </delete>
+</mapper> 

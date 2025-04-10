@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.hello.mapper.PhysicalExamReportMapper">
+    
+    <select id="selectAll" resultType="com.example.hello.entity.PhysicalExamReport">
+        SELECT * FROM physical_exam_report
+    </select>
+    
+    <select id="selectByCondition" resultType="com.example.hello.entity.PhysicalExamReport">
+        SELECT * FROM physical_exam_report
+        <where>
+            <if test="userId != null">
+                AND user_id = #{userId}
+            </if>
+            <if test="doctorId != null">
+                AND doctor_id = #{doctorId}
+            </if>
+        </where>
+        ORDER BY create_time DESC
+    </select>
+    
+    <select id="selectById" resultType="com.example.hello.entity.PhysicalExamReport">
+        SELECT * FROM physical_exam_report WHERE report_id = #{reportId}
+    </select>
+    
+    <insert id="insert" parameterType="com.example.hello.entity.PhysicalExamReport">
+        INSERT INTO physical_exam_report (
+            user_id, exam_id, doctor_id, results, suggestions
+        )
+        VALUES (
+            #{userId}, #{examId}, #{doctorId}, #{results,jdbcType=OTHER}, #{suggestions}
+        )
+    </insert>
+    
+    <update id="update" parameterType="com.example.hello.entity.PhysicalExamReport">
+        UPDATE physical_exam_report
+        <set>
+            <if test="results != null">results = #{results,jdbcType=OTHER},</if>
+            <if test="suggestions != null">suggestions = #{suggestions},</if>
+        </set>
+        WHERE report_id = #{reportId}
+    </update>
+    
+    <delete id="deleteById">
+        DELETE FROM physical_exam_report WHERE report_id = #{reportId}
+    </delete>
+</mapper> 

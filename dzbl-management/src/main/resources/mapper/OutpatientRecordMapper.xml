@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.hello.mapper.OutpatientRecordMapper">
+    
+    <select id="selectAll" resultType="com.example.hello.entity.OutpatientRecord">
+        SELECT * FROM outpatient_record
+    </select>
+    
+    <select id="selectByCondition" resultType="com.example.hello.entity.OutpatientRecord">
+        SELECT * FROM outpatient_record
+        <where>
+            <if test="userId != null">
+                AND user_id = #{userId}
+            </if>
+            <if test="doctorId != null">
+                AND doctor_id = #{doctorId}
+            </if>
+            <if test="reportId != null">
+                AND report_id = #{reportId}
+            </if>
+        </where>
+        ORDER BY create_time DESC
+    </select>
+    
+    <select id="selectById" resultType="com.example.hello.entity.OutpatientRecord">
+        SELECT * FROM outpatient_record WHERE record_id = #{recordId}
+    </select>
+    
+    <insert id="insert" parameterType="com.example.hello.entity.OutpatientRecord">
+        INSERT INTO outpatient_record (
+            register_id, user_id, chief_complaint, diagnosis, 
+            prescription, doctor_id, report_id
+        )
+        VALUES (
+            #{registerId}, #{userId}, #{chiefComplaint}, #{diagnosis}, 
+            #{prescription}, #{doctorId}, #{reportId}
+        )
+    </insert>
+    
+    <update id="update" parameterType="com.example.hello.entity.OutpatientRecord">
+        UPDATE outpatient_record
+        <set>
+            <if test="chiefComplaint != null">chief_complaint = #{chiefComplaint},</if>
+            <if test="diagnosis != null">diagnosis = #{diagnosis},</if>
+            <if test="prescription != null">prescription = #{prescription},</if>
+            <if test="reportId != null">report_id = #{reportId},</if>
+        </set>
+        WHERE record_id = #{recordId}
+    </update>
+    
+    <delete id="deleteById">
+        DELETE FROM outpatient_record WHERE record_id = #{recordId}
+    </delete>
+</mapper> 

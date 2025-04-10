@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.hello.mapper.DoctorAccountMapper">
+    
+    <select id="selectAll" resultType="com.example.hello.entity.DoctorAccount">
+        SELECT doctor_id, username FROM doctor_account
+    </select>
+    
+    <select id="selectByCondition" resultType="com.example.hello.entity.DoctorAccount">
+        SELECT doctor_id, username FROM doctor_account
+        <where>
+            <if test="username != null and username != ''">
+                AND username LIKE CONCAT('%', #{username}, '%')
+            </if>
+        </where>
+    </select>
+    
+    <select id="selectById" resultType="com.example.hello.entity.DoctorAccount">
+        SELECT * FROM doctor_account WHERE doctor_id = #{doctorId}
+    </select>
+    
+    <select id="selectByUsername" resultType="com.example.hello.entity.DoctorAccount">
+        SELECT * FROM doctor_account WHERE username = #{username}
+    </select>
+    
+    <insert id="insert" parameterType="com.example.hello.entity.DoctorAccount" useGeneratedKeys="true" keyProperty="doctorId">
+        INSERT INTO doctor_account (username, password)
+        VALUES (#{username}, #{password})
+    </insert>
+    
+    <update id="updatePassword">
+        UPDATE doctor_account SET password = #{password}
+        WHERE doctor_id = #{doctorId}
+    </update>
+    
+    <delete id="deleteById">
+        DELETE FROM doctor_account WHERE doctor_id = #{doctorId}
+    </delete>
+</mapper> 

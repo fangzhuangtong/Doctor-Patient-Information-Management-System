@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.hello.mapper.SurgeryMapper">
+    
+    <select id="selectAll" resultType="com.example.hello.entity.Surgery">
+        SELECT * FROM surgery
+    </select>
+    
+    <select id="selectByCondition" resultType="com.example.hello.entity.Surgery">
+        SELECT * FROM surgery
+        <where>
+            <if test="userId != null">
+                AND user_id = #{userId}
+            </if>
+            <if test="surgeonId != null">
+                AND surgeon_id = #{surgeonId}
+            </if>
+            <if test="status != null and status != ''">
+                AND status = #{status}
+            </if>
+        </where>
+        ORDER BY surgery_time DESC
+    </select>
+    
+    <select id="selectById" resultType="com.example.hello.entity.Surgery">
+        SELECT * FROM surgery WHERE surgery_id = #{surgeryId}
+    </select>
+    
+    <insert id="insert" parameterType="com.example.hello.entity.Surgery">
+        INSERT INTO surgery (
+            user_id, surgery_name, surgeon_id, surgery_time, status, postoperative_notes
+        )
+        VALUES (
+            #{userId}, #{surgeryName}, #{surgeonId}, #{surgeryTime}, #{status}, #{postoperativeNotes}
+        )
+    </insert>
+    
+    <update id="update" parameterType="com.example.hello.entity.Surgery">
+        UPDATE surgery
+        <set>
+            <if test="surgeryName != null">surgery_name = #{surgeryName},</if>
+            <if test="surgeryTime != null">surgery_time = #{surgeryTime},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="postoperativeNotes != null">postoperative_notes = #{postoperativeNotes},</if>
+        </set>
+        WHERE surgery_id = #{surgeryId}
+    </update>
+    
+    <delete id="deleteById">
+        DELETE FROM surgery WHERE surgery_id = #{surgeryId}
+    </delete>
+</mapper> 
